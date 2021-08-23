@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using System.Linq;
 using API.Data;
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class UsersController : Controller
+    public class UsersController : BaseApiController
     {
         private readonly DataContext _context;
         public UsersController(DataContext context)
@@ -16,6 +15,7 @@ namespace API.Controllers
             _context = context;
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public ActionResult<IEnumerable<AppUser>> GetUsers()
         {
@@ -25,6 +25,7 @@ namespace API.Controllers
         }
 
         // api/users/3
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<AppUser> GetUsers(int id)
         {
